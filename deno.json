@@ -4,6 +4,6 @@
         "indentWidth": 4,
         "semiColons": true,
         "proseWrap": "preserve",
-        "exclude": ["elm.mini.js"]
+        "exclude": ["elm.js"]
     }
 }
