@@ -784,11 +784,11 @@ function _Debug_crash_UNUSED(identifier, fact1, fact2, fact3, fact4)
 
 function _Debug_regionToString(region)
 {
-	if (region.M.C === region.R.C)
+	if (region.P.E === region.U.E)
 	{
-		return 'on line ' + region.M.C;
+		return 'on line ' + region.P.E;
 	}
-	return 'on lines ' + region.M.C + ' through ' + region.R.C;
+	return 'on lines ' + region.P.E + ' through ' + region.U.E;
 }
 
 
@@ -1857,9 +1857,9 @@ var _Platform_worker = F4(function(impl, flagDecoder, debugMetadata, args)
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
-		impl.aF,
-		impl.aD,
+		impl.aA,
+		impl.aI,
+		impl.aG,
 		function() { return function() {} }
 	);
 });
@@ -2719,9 +2719,9 @@ var _VirtualDom_mapEventTuple = F2(function(func, tuple)
 var _VirtualDom_mapEventRecord = F2(function(func, record)
 {
 	return {
-		q: func(record.q),
-		N: record.N,
-		K: record.K
+		s: func(record.s),
+		Q: record.Q,
+		N: record.N
 	}
 });
 
@@ -2989,11 +2989,11 @@ function _VirtualDom_makeCallback(eventNode, initialHandler)
 		// 3 = Custom
 
 		var value = result.a;
-		var message = !tag ? value : tag < 3 ? value.a : value.q;
-		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.N;
+		var message = !tag ? value : tag < 3 ? value.a : value.s;
+		var stopPropagation = tag == 1 ? value.b : tag == 3 && value.Q;
 		var currentEventNode = (
 			stopPropagation && event.stopPropagation(),
-			(tag == 2 ? value.b : tag == 3 && value.K) && event.preventDefault(),
+			(tag == 2 ? value.b : tag == 3 && value.N) && event.preventDefault(),
 			eventNode
 		);
 		var tagger;
@@ -3943,11 +3943,11 @@ var _Browser_element = _Debugger_element || F4(function(impl, flagDecoder, debug
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
-		impl.aF,
-		impl.aD,
+		impl.aA,
+		impl.aI,
+		impl.aG,
 		function(sendToApp, initialModel) {
-			var view = impl.aG;
+			var view = impl.aJ;
 			/**/
 			var domNode = args['node'];
 			//*/
@@ -3979,12 +3979,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 	return _Platform_initialize(
 		flagDecoder,
 		args,
-		impl.ax,
-		impl.aF,
-		impl.aD,
+		impl.aA,
+		impl.aI,
+		impl.aG,
 		function(sendToApp, initialModel) {
-			var divertHrefToApp = impl.L && impl.L(sendToApp)
-			var view = impl.aG;
+			var divertHrefToApp = impl.O && impl.O(sendToApp)
+			var view = impl.aJ;
 			var title = _VirtualDom_doc.title;
 			var bodyNode = _VirtualDom_doc.body;
 			var currNode = _VirtualDom_virtualize(bodyNode);
@@ -3992,12 +3992,12 @@ var _Browser_document = _Debugger_document || F4(function(impl, flagDecoder, deb
 			{
 				_VirtualDom_divertHrefToApp = divertHrefToApp;
 				var doc = view(model);
-				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.aq);
+				var nextNode = _VirtualDom_node('body')(_List_Nil)(doc.at);
 				var patches = _VirtualDom_diff(currNode, nextNode);
 				bodyNode = _VirtualDom_applyPatches(bodyNode, currNode, patches, sendToApp);
 				currNode = nextNode;
 				_VirtualDom_divertHrefToApp = 0;
-				(title !== doc.aE) && (_VirtualDom_doc.title = title = doc.aE);
+				(title !== doc.aH) && (_VirtualDom_doc.title = title = doc.aH);
 			});
 		}
 	);
@@ -4053,12 +4053,12 @@ function _Browser_makeAnimator(model, draw)
 
 function _Browser_application(impl)
 {
-	var onUrlChange = impl.az;
-	var onUrlRequest = impl.aA;
+	var onUrlChange = impl.aC;
+	var onUrlRequest = impl.aD;
 	var key = function() { key.a(onUrlChange(_Browser_getUrl())); };
 
 	return _Browser_document({
-		L: function(sendToApp)
+		O: function(sendToApp)
 		{
 			key.a = sendToApp;
 			_Browser_window.addEventListener('popstate', key);
@@ -4074,9 +4074,9 @@ function _Browser_application(impl)
 					var next = $elm$url$Url$fromString(href).a;
 					sendToApp(onUrlRequest(
 						(next
-							&& curr.ad === next.ad
-							&& curr.V === next.V
-							&& curr.aa.a === next.aa.a
+							&& curr.ag === next.ag
+							&& curr.Y === next.Y
+							&& curr.ad.a === next.ad.a
 						)
 							? $elm$browser$Browser$Internal(next)
 							: $elm$browser$Browser$External(href)
@@ -4084,13 +4084,13 @@ function _Browser_application(impl)
 				}
 			});
 		},
-		ax: function(flags)
+		aA: function(flags)
 		{
-			return A3(impl.ax, flags, _Browser_getUrl(), key);
+			return A3(impl.aA, flags, _Browser_getUrl(), key);
 		},
-		aG: impl.aG,
-		aF: impl.aF,
-		aD: impl.aD
+		aJ: impl.aJ,
+		aI: impl.aI,
+		aG: impl.aG
 	});
 }
 
@@ -4156,17 +4156,17 @@ var _Browser_decodeEvent = F2(function(decoder, event)
 function _Browser_visibilityInfo()
 {
 	return (typeof _VirtualDom_doc.hidden !== 'undefined')
-		? { av: 'hidden', ar: 'visibilitychange' }
+		? { ay: 'hidden', au: 'visibilitychange' }
 		:
 	(typeof _VirtualDom_doc.mozHidden !== 'undefined')
-		? { av: 'mozHidden', ar: 'mozvisibilitychange' }
+		? { ay: 'mozHidden', au: 'mozvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.msHidden !== 'undefined')
-		? { av: 'msHidden', ar: 'msvisibilitychange' }
+		? { ay: 'msHidden', au: 'msvisibilitychange' }
 		:
 	(typeof _VirtualDom_doc.webkitHidden !== 'undefined')
-		? { av: 'webkitHidden', ar: 'webkitvisibilitychange' }
-		: { av: 'hidden', ar: 'visibilitychange' };
+		? { ay: 'webkitHidden', au: 'webkitvisibilitychange' }
+		: { ay: 'hidden', au: 'visibilitychange' };
 }
 
 
@@ -4247,12 +4247,12 @@ var _Browser_call = F2(function(functionName, id)
 function _Browser_getViewport()
 {
 	return {
-		ah: _Browser_getScene(),
-		ak: {
-			am: _Browser_window.pageXOffset,
-			an: _Browser_window.pageYOffset,
-			al: _Browser_doc.documentElement.clientWidth,
-			U: _Browser_doc.documentElement.clientHeight
+		ak: _Browser_getScene(),
+		an: {
+			ap: _Browser_window.pageXOffset,
+			aq: _Browser_window.pageYOffset,
+			ao: _Browser_doc.documentElement.clientWidth,
+			X: _Browser_doc.documentElement.clientHeight
 		}
 	};
 }
@@ -4262,8 +4262,8 @@ function _Browser_getScene()
 	var body = _Browser_doc.body;
 	var elem = _Browser_doc.documentElement;
 	return {
-		al: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
-		U: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
+		ao: Math.max(body.scrollWidth, body.offsetWidth, elem.scrollWidth, elem.offsetWidth, elem.clientWidth),
+		X: Math.max(body.scrollHeight, body.offsetHeight, elem.scrollHeight, elem.offsetHeight, elem.clientHeight)
 	};
 }
 
@@ -4286,15 +4286,15 @@ function _Browser_getViewportOf(id)
 	return _Browser_withNode(id, function(node)
 	{
 		return {
-			ah: {
-				al: node.scrollWidth,
-				U: node.scrollHeight
-			},
 			ak: {
-				am: node.scrollLeft,
-				an: node.scrollTop,
-				al: node.clientWidth,
-				U: node.clientHeight
+				ao: node.scrollWidth,
+				X: node.scrollHeight
+			},
+			an: {
+				ap: node.scrollLeft,
+				aq: node.scrollTop,
+				ao: node.clientWidth,
+				X: node.clientHeight
 			}
 		};
 	});
@@ -4324,18 +4324,18 @@ function _Browser_getElement(id)
 		var x = _Browser_window.pageXOffset;
 		var y = _Browser_window.pageYOffset;
 		return {
-			ah: _Browser_getScene(),
-			ak: {
-				am: x,
-				an: y,
-				al: _Browser_doc.documentElement.clientWidth,
-				U: _Browser_doc.documentElement.clientHeight
+			ak: _Browser_getScene(),
+			an: {
+				ap: x,
+				aq: y,
+				ao: _Browser_doc.documentElement.clientWidth,
+				X: _Browser_doc.documentElement.clientHeight
 			},
-			at: {
-				am: x + rect.left,
-				an: y + rect.top,
-				al: rect.width,
-				U: rect.height
+			aw: {
+				ap: x + rect.left,
+				aq: y + rect.top,
+				ao: rect.width,
+				X: rect.height
 			}
 		};
 	});
@@ -4874,7 +4874,7 @@ var $elm$url$Url$Http = 0;
 var $elm$url$Url$Https = 1;
 var $elm$url$Url$Url = F6(
 	function (protocol, host, port_, path, query, fragment) {
-		return {T: fragment, V: host, Z: path, aa: port_, ad: protocol, ae: query};
+		return {W: fragment, Y: host, ab: path, ad: port_, ag: protocol, ah: query};
 	});
 var $elm$core$String$contains = _String_contains;
 var $elm$core$String$length = _String_length;
@@ -5153,16 +5153,284 @@ var $elm$core$Task$perform = F2(
 			A2($elm$core$Task$map, toMessage, task));
 	});
 var $elm$browser$Browser$element = _Browser_element;
+var $elm$core$Dict$RBEmpty_elm_builtin = {$: -2};
+var $elm$core$Dict$empty = $elm$core$Dict$RBEmpty_elm_builtin;
 var $Orasund$elm_bag$List$Bag$empty = _List_Nil;
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$Main$init = function (_v0) {
 	return _Utils_Tuple2(
-		{B: $Orasund$elm_bag$List$Bag$empty, H: 0},
+		{z: $Orasund$elm_bag$List$Bag$empty, J: 0, K: $elm$core$Dict$empty},
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
+var $elm$core$Basics$negate = function (n) {
+	return -n;
+};
+var $elm$core$Basics$abs = function (n) {
+	return (n < 0) ? (-n) : n;
+};
+var $elm$core$Basics$modBy = _Basics_modBy;
+var $author$project$Fraction$gcd = F2(
+	function (x, y) {
+		var aux = F2(
+			function (a, b) {
+				aux:
+				while (true) {
+					if (_Utils_cmp(a, b) < 0) {
+						var $temp$a = b,
+							$temp$b = a;
+						a = $temp$a;
+						b = $temp$b;
+						continue aux;
+					} else {
+						if (!b) {
+							return a;
+						} else {
+							var $temp$a = b,
+								$temp$b = A2($elm$core$Basics$modBy, b, a);
+							a = $temp$a;
+							b = $temp$b;
+							continue aux;
+						}
+					}
+				}
+			});
+		return A2(
+			aux,
+			$elm$core$Basics$abs(x),
+			$elm$core$Basics$abs(y));
+	});
+var $author$project$Fraction$reduce = function (fraction) {
+	var _v0 = fraction;
+	var a = _v0.g;
+	var b = _v0.h;
+	var diver = A2($author$project$Fraction$gcd, a, b);
+	var a2 = (a / diver) | 0;
+	var b2 = (b / diver) | 0;
+	return {g: a2, h: b2};
+};
+var $author$project$Fraction$frac = F2(
+	function (a, b) {
+		return $author$project$Fraction$reduce(
+			{g: a, h: b});
+	});
+var $author$project$Fraction$add = F2(
+	function (a, b) {
+		return $author$project$Fraction$reduce(
+			A2($author$project$Fraction$frac, (a.g * b.h) + (b.g * a.h), a.h * b.h));
+	});
+var $elm$core$Basics$compare = _Utils_compare;
+var $elm$core$Dict$get = F2(
+	function (targetKey, dict) {
+		get:
+		while (true) {
+			if (dict.$ === -2) {
+				return $elm$core$Maybe$Nothing;
+			} else {
+				var key = dict.b;
+				var value = dict.c;
+				var left = dict.d;
+				var right = dict.e;
+				var _v1 = A2($elm$core$Basics$compare, targetKey, key);
+				switch (_v1) {
+					case 0:
+						var $temp$targetKey = targetKey,
+							$temp$dict = left;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+					case 1:
+						return $elm$core$Maybe$Just(value);
+					default:
+						var $temp$targetKey = targetKey,
+							$temp$dict = right;
+						targetKey = $temp$targetKey;
+						dict = $temp$dict;
+						continue get;
+				}
+			}
+		}
+	});
+var $author$project$Main$showPewaris = function (pewaris) {
+	switch (pewaris) {
+		case 0:
+			return 'Suami';
+		case 1:
+			return 'Istri';
+		case 2:
+			return 'AnakLaki';
+		default:
+			return 'AnakPerempuan';
+	}
+};
+var $author$project$Main$get = F2(
+	function (p, hsl) {
+		return A2(
+			$elm$core$Dict$get,
+			$author$project$Main$showPewaris(p),
+			hsl);
+	});
+var $elm$core$Dict$Black = 1;
+var $elm$core$Dict$RBNode_elm_builtin = F5(
+	function (a, b, c, d, e) {
+		return {$: -1, a: a, b: b, c: c, d: d, e: e};
+	});
+var $elm$core$Dict$Red = 0;
+var $elm$core$Dict$balance = F5(
+	function (color, key, value, left, right) {
+		if ((right.$ === -1) && (!right.a)) {
+			var _v1 = right.a;
+			var rK = right.b;
+			var rV = right.c;
+			var rLeft = right.d;
+			var rRight = right.e;
+			if ((left.$ === -1) && (!left.a)) {
+				var _v3 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var lLeft = left.d;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					0,
+					key,
+					value,
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, lK, lV, lLeft, lRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, rK, rV, rLeft, rRight));
+			} else {
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					color,
+					rK,
+					rV,
+					A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, left, rLeft),
+					rRight);
+			}
+		} else {
+			if ((((left.$ === -1) && (!left.a)) && (left.d.$ === -1)) && (!left.d.a)) {
+				var _v5 = left.a;
+				var lK = left.b;
+				var lV = left.c;
+				var _v6 = left.d;
+				var _v7 = _v6.a;
+				var llK = _v6.b;
+				var llV = _v6.c;
+				var llLeft = _v6.d;
+				var llRight = _v6.e;
+				var lRight = left.e;
+				return A5(
+					$elm$core$Dict$RBNode_elm_builtin,
+					0,
+					lK,
+					lV,
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, llK, llV, llLeft, llRight),
+					A5($elm$core$Dict$RBNode_elm_builtin, 1, key, value, lRight, right));
+			} else {
+				return A5($elm$core$Dict$RBNode_elm_builtin, color, key, value, left, right);
+			}
+		}
+	});
+var $elm$core$Dict$insertHelp = F3(
+	function (key, value, dict) {
+		if (dict.$ === -2) {
+			return A5($elm$core$Dict$RBNode_elm_builtin, 0, key, value, $elm$core$Dict$RBEmpty_elm_builtin, $elm$core$Dict$RBEmpty_elm_builtin);
+		} else {
+			var nColor = dict.a;
+			var nKey = dict.b;
+			var nValue = dict.c;
+			var nLeft = dict.d;
+			var nRight = dict.e;
+			var _v1 = A2($elm$core$Basics$compare, key, nKey);
+			switch (_v1) {
+				case 0:
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						A3($elm$core$Dict$insertHelp, key, value, nLeft),
+						nRight);
+				case 1:
+					return A5($elm$core$Dict$RBNode_elm_builtin, nColor, nKey, value, nLeft, nRight);
+				default:
+					return A5(
+						$elm$core$Dict$balance,
+						nColor,
+						nKey,
+						nValue,
+						nLeft,
+						A3($elm$core$Dict$insertHelp, key, value, nRight));
+			}
+		}
+	});
+var $elm$core$Dict$insert = F3(
+	function (key, value, dict) {
+		var _v0 = A3($elm$core$Dict$insertHelp, key, value, dict);
+		if ((_v0.$ === -1) && (!_v0.a)) {
+			var _v1 = _v0.a;
+			var k = _v0.b;
+			var v = _v0.c;
+			var l = _v0.d;
+			var r = _v0.e;
+			return A5($elm$core$Dict$RBNode_elm_builtin, 1, k, v, l, r);
+		} else {
+			var x = _v0;
+			return x;
+		}
+	});
+var $author$project$Main$insert = F3(
+	function (p, b, h) {
+		return A3(
+			$elm$core$Dict$insert,
+			$author$project$Main$showPewaris(p),
+			b,
+			h);
+	});
+var $author$project$Main$add = F2(
+	function (cfg, hsl) {
+		var p = cfg.a;
+		var b = cfg.b;
+		var _v1 = A2($author$project$Main$get, p, hsl);
+		if (_v1.$ === 1) {
+			return A3($author$project$Main$insert, p, b, hsl);
+		} else {
+			var fr = _v1.a;
+			return A3(
+				$author$project$Main$insert,
+				p,
+				A2($author$project$Fraction$add, fr, b),
+				hsl);
+		}
+	});
+var $elm$core$Basics$composeR = F3(
+	function (f, g, x) {
+		return g(
+			f(x));
+	});
+var $author$project$Main$pembagian = function (pewaris) {
+	switch (pewaris) {
+		case 2:
+			return A2($author$project$Fraction$frac, 1, 2);
+		case 0:
+			return A2($author$project$Fraction$frac, 1, 2);
+		case 1:
+			return A2($author$project$Fraction$frac, 1, 2);
+		default:
+			return A2($author$project$Fraction$frac, 1, 2);
+	}
+};
+var $author$project$Main$hitungHasil = A2(
+	$elm$core$Basics$composeR,
+	$elm$core$List$map(
+		function (_v0) {
+			var p = _v0.a;
+			return _Utils_Tuple2(
+				p,
+				$author$project$Main$pembagian(p));
+		}),
+	A2($elm$core$List$foldl, $author$project$Main$add, $elm$core$Dict$empty));
 var $Orasund$elm_bag$List$Bag$insert = F3(
 	function (n, a, list) {
 		var rec = F2(
@@ -5206,11 +5474,13 @@ var $author$project$Main$update = F2(
 		if (!msg.$) {
 			var pewaris = msg.a;
 			var jumlah = msg.b;
+			var newConfig = A3($Orasund$elm_bag$List$Bag$insert, jumlah, pewaris, model.z);
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
 					{
-						B: A3($Orasund$elm_bag$List$Bag$insert, jumlah, pewaris, model.B)
+						z: newConfig,
+						K: $author$project$Main$hitungHasil(newConfig)
 					}),
 				$elm$core$Platform$Cmd$none);
 		} else {
@@ -5218,11 +5488,14 @@ var $author$project$Main$update = F2(
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
-					{H: rupiah}),
+					{J: rupiah}),
 				$elm$core$Platform$Cmd$none);
 		}
 	});
 var $author$project$Main$AnakLaki = 2;
+var $author$project$Main$AnakPerempuan = 3;
+var $author$project$Main$Istri = 1;
+var $author$project$Main$Suami = 0;
 var $author$project$Main$TambahPewaris = F2(
 	function (a, b) {
 		return {$: 0, a: a, b: b};
@@ -5231,11 +5504,6 @@ var $author$project$Main$UbahJumlahHarta = function (a) {
 	return {$: 1, a: a};
 };
 var $elm$html$Html$button = _VirtualDom_node('button');
-var $elm$core$Basics$composeR = F3(
-	function (f, g, x) {
-		return g(
-			f(x));
-	});
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $elm$html$Html$h1 = _VirtualDom_node('h1');
 var $elm$html$Html$input = _VirtualDom_node('input');
@@ -5299,17 +5567,13 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 			$elm$json$Json$Encode$string(string));
 	});
 var $elm$html$Html$Attributes$placeholder = $elm$html$Html$Attributes$stringProperty('placeholder');
-var $author$project$Main$showPewaris = function (pewaris) {
-	switch (pewaris) {
-		case 0:
-			return 'Suami';
-		case 1:
-			return 'Istri';
-		case 2:
-			return 'AnakLaki';
-		default:
-			return 'AnakPerempuan';
-	}
+var $author$project$Fraction$show = function (fraction) {
+	var _v0 = $author$project$Fraction$reduce(fraction);
+	var a = _v0.g;
+	var b = _v0.h;
+	var sa = $elm$core$String$fromInt(a);
+	var sb = $elm$core$String$fromInt(b);
+	return sa + (' / ' + sb);
 };
 var $author$project$Main$showConfig = function (config) {
 	var sh = function (_v0) {
@@ -5522,6 +5786,18 @@ var $author$project$Main$showHarta = A2(
 								function (r) {
 									return 'Rp. ' + r;
 								}))))))));
+var $author$project$Main$showHasil = A2(
+	$elm$core$Basics$composeR,
+	$elm$core$Dict$toList,
+	A2(
+		$elm$core$Basics$composeR,
+		$elm$core$List$map(
+			function (_v0) {
+				var p = _v0.a;
+				var b = _v0.b;
+				return p + (' : ' + $author$project$Fraction$show(b));
+			}),
+		$elm$core$String$join(', ')));
 var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$html$Html$Attributes$type_ = $elm$html$Html$Attributes$stringProperty('type');
@@ -5548,15 +5824,33 @@ var $author$project$Main$view = function (model) {
 						$elm$html$Html$text('Warisin')
 					])),
 				A2(
-				$elm$html$Html$button,
+				$elm$html$Html$div,
+				_List_Nil,
+				A2(
+					$elm$core$List$map,
+					function (pw) {
+						return A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Events$onClick(
+									A2($author$project$Main$TambahPewaris, pw, 1))
+								]),
+							_List_fromArray(
+								[
+									$elm$html$Html$text(
+									'tambah ' + $author$project$Main$showPewaris(pw))
+								]));
+					},
+					_List_fromArray(
+						[0, 1, 2, 3]))),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
 				_List_fromArray(
 					[
-						$elm$html$Html$Events$onClick(
-						A2($author$project$Main$TambahPewaris, 2, 1))
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('tambah')
+						$elm$html$Html$text(
+						$author$project$Main$showConfig(model.z))
 					])),
 				A2(
 				$elm$html$Html$p,
@@ -5564,7 +5858,24 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$showConfig(model.B))
+						A2(
+							$elm$core$String$join,
+							', ',
+							A2(
+								$elm$core$List$map,
+								A2(
+									$elm$core$Basics$composeR,
+									$elm$core$Tuple$first,
+									A2($elm$core$Basics$composeR, $author$project$Main$pembagian, $author$project$Fraction$show)),
+								model.z)))
+					])),
+				A2(
+				$elm$html$Html$p,
+				_List_Nil,
+				_List_fromArray(
+					[
+						$elm$html$Html$text(
+						$author$project$Main$showHasil(model.K))
 					])),
 				A2(
 				$elm$html$Html$input,
@@ -5588,18 +5899,19 @@ var $author$project$Main$view = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text(
-						$author$project$Main$showHarta(model.H))
+						$author$project$Main$showHarta(model.J))
 					]))
 			]));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{
-		ax: $author$project$Main$init,
-		aD: function (_v0) {
+		aA: $author$project$Main$init,
+		aG: function (_v0) {
 			return $elm$core$Platform$Sub$none;
 		},
-		aF: $author$project$Main$update,
-		aG: $author$project$Main$view
+		aI: $author$project$Main$update,
+		aJ: $author$project$Main$view
 	});
-_Platform_export({'Main':{'init':$author$project$Main$main(
+var $author$project$Fraction$main = $elm$html$Html$text('Hello!');
+_Platform_export({'Fraction':{'init':_VirtualDom_init($author$project$Fraction$main)(0)(0)},'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(0))(0)}});}(this));
