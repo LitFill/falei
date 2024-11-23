@@ -1,6 +1,8 @@
 module Main exposing (..)
 
 import Browser
+import Dict exposing (Dict)
+import Fraction as Fr
 import Html as H exposing (Html)
 import Html.Attributes as A
 import Html.Events as E
@@ -49,6 +51,26 @@ readPewaris str =
             Nothing
 
 
+type alias Bagian =
+    Fr.Fraction
+
+
+pembagian : Pewaris -> Bagian
+pembagian pewaris =
+    case pewaris of
+        AnakLaki ->
+            Fr.frac 1 2
+
+        Suami ->
+            Fr.frac 1 2
+
+        Istri ->
+            Fr.frac 1 2
+
+        AnakPerempuan ->
+            Fr.frac 1 2
+
+
 type alias Jumlah =
     Int
 
@@ -71,9 +93,46 @@ showConfig config =
         |> String.join ", "
 
 
+type alias PewarisStr =
+    String
+
+
+type alias Hasil =
+    Dict PewarisStr Bagian
+
+
+insert : Pewaris -> Bagian -> Hasil -> Hasil
+insert p b h =
+    Dict.insert (showPewaris p) b h
+
+
+get : Pewaris -> Hasil -> Maybe Bagian
+get p hsl =
+    Dict.get (showPewaris p) hsl
+
+
+add : ( Pewaris, Bagian ) -> Hasil -> Hasil
+add cfg hsl =
+    case cfg of
+        ( p, b ) ->
+            case get p hsl of
+                Nothing ->
+                    insert p b hsl
+
+                Just fr ->
+                    insert p (Fr.add fr b) hsl
+
+
+hitungHasil : Config -> Hasil
+hitungHasil =
+    List.map (\( p, _ ) -> ( p, pembagian p ))
+        >> List.foldl add Dict.empty
+
+
 type alias Model =
     { config : Config
     , harta : Int
+    , hasil : Hasil
     }
 
 
@@ -81,6 +140,7 @@ init : () -> ( Model, Cmd Msg )
 init _ =
     ( { config = LB.empty
       , harta = 0
+      , hasil = Dict.empty
       }
     , Cmd.none
     )
@@ -95,10 +155,14 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         TambahPewaris pewaris jumlah ->
-            ( { model
-                | config =
+            let
+                newConfig =
                     model.config
                         |> LB.insert jumlah pewaris
+            in
+            ( { model
+                | config = newConfig
+                , hasil = hitungHasil newConfig
               }
             , Cmd.none
             )
@@ -142,14 +206,36 @@ view : Model -> Html Msg
 view model =
     H.div []
         [ H.h1 [] [ H.text "Warisin" ]
-        , H.button [ E.onClick <| TambahPewaris AnakLaki 1 ] [ H.text "tambah" ]
+        , H.div [] <|
+            List.map
+                (\pw -> H.button [ E.onClick <| TambahPewaris pw 1 ] [ H.text <| "tambah " ++ showPewaris pw ])
+                [ Suami, Istri, AnakLaki, AnakPerempuan ]
         , H.p []
-            [ model
-                |> .config
+            [ model.config
                 |> showConfig
                 |> H.text
             ]
-        , H.input [ A.type_ "number", A.placeholder "Masukkan jumlah harta", E.onInput (String.toInt >> Maybe.withDefault 0 >> UbahJumlahHarta) ] []
+        , H.p []
+            [ model.config
+                |> List.map (Tuple.first >> pembagian >> Fr.show)
+                |> String.join ", "
+                |> H.text
+            ]
+        , H.p []
+            [ model.hasil
+                |> showHasil
+                |> H.text
+            ]
+        , H.input
+            [ A.type_ "number"
+            , A.placeholder "Masukkan jumlah harta"
+            , E.onInput
+                (String.toInt
+                    >> Maybe.withDefault 0
+                    >> UbahJumlahHarta
+                )
+            ]
+            []
         , H.p []
             [ model
                 |> .harta
@@ -157,6 +243,13 @@ view model =
                 |> H.text
             ]
         ]
+
+
+showHasil : Hasil -> String
+showHasil =
+    Dict.toList
+        >> List.map (\( p, b ) -> p ++ " : " ++ Fr.show b)
+        >> String.join ", "
 
 
 main : Program () Model Msg
