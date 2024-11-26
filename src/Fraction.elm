@@ -104,21 +104,30 @@ sub a b =
     add a (neg b)
 
 
+{-| same as [b - a], primarily for piping:
+
+`frac 1 4 == frac 1 2 |> subBy (frac 1 4)`
+
+-}
+subBy : Fraction -> Fraction -> Fraction
+subBy a b =
+    sub b a
+
+
 {-| multiply two fractions
 -}
 mult : Fraction -> Fraction -> Fraction
 mult a b =
-    reduce <|
-        frac
-            (a.a * b.a)
-            (a.b * b.b)
+    frac
+        (a.a * b.a)
+        (a.b * b.b)
 
 
 {-| same as [a^-1]
 -}
 inverse : Fraction -> Fraction
 inverse fr =
-    { fr | a = fr.b, b = fr.a }
+    reduce { fr | a = fr.b, b = fr.a }
 
 
 {-| same as [a / b]
@@ -126,6 +135,25 @@ inverse fr =
 div : Fraction -> Fraction -> Fraction
 div a b =
     mult a (inverse b)
+
+
+{-| same as [b / a], primarily for piping:
+
+`fromInt 2 == frac 1 2 |> divBy (frac 1 4)`
+
+-}
+divBy : Fraction -> Fraction -> Fraction
+divBy a b =
+    div b a
+
+
+testing : Fraction
+testing =
+    frac 1 2
+        |> mult (fromInt 2)
+        |> add (frac 3 8)
+        |> div (fromInt 4)
+        |> sub (frac 2 3)
 
 
 {-| dummy main
