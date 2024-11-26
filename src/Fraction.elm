@@ -1,5 +1,6 @@
 module Fraction exposing (..)
 
+import Basics as B
 import Html
 
 
@@ -25,41 +26,40 @@ fromInt n =
     frac n 1
 
 
+{-| convert to Float
+-}
+toFloat : Fraction -> Float
+toFloat fr =
+    B.toFloat fr.a / B.toFloat fr.b
+
+
 {-| convert to string
 -}
 show : Fraction -> String
-show fraction =
+show { a, b } =
     let
-        { a, b } =
-            reduce fraction
-
-        sa =
-            String.fromInt a
-
-        sb =
-            String.fromInt b
+        ( sa, sb ) =
+            ( String.fromInt a, String.fromInt b )
     in
-    sa ++ " / " ++ sb
+    "(" ++ sa ++ " / " ++ sb ++ ")"
 
 
 {-| reduce or simplify the fraction
 -}
 reduce : Fraction -> Fraction
-reduce fraction =
+reduce { a, b } =
     let
-        { a, b } =
-            fraction
-
         diver =
             gcd a b
 
-        a2 =
-            a // diver
-
-        b2 =
-            b // diver
+        ( a2, b2 ) =
+            ( a // diver, b // diver )
     in
-    { a = a2, b = b2 }
+    if b2 < 0 then
+        { a = -a2, b = -b2 }
+
+    else
+        { a = a2, b = b2 }
 
 
 {-| for finding greatest common divisor of two ints
